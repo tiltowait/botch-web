@@ -65,13 +65,13 @@
           id="character-type"
         />
         <!-- Character name -->
-        <label class={labelClass} for="grid-first-name">
+        <label class={labelClass} for="character-name">
           Character name
         </label>
         <input
           bind:value={characterState.name}
           class={inputClass}
-          id="grid-first-name"
+          id="character-name"
           type="text"
           placeholder="John Wilcox"
         >
@@ -80,13 +80,13 @@
         <div class="flex flex-wrap -mx-3">
           <!-- Path -->
           <div class="w-full md:w-1/2 px-3">
-            <label class={labelClass} for="grid-grounding">
+            <label class={labelClass} for="path">
               Path
             </label>
             <input
               bind:value={characterState.grounding.path}
               class={inputClass}
-              id="grid-last-name"
+              id="path"
               type="text"
             >
           </div>
