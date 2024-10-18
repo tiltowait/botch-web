@@ -11,6 +11,32 @@
       return (word.charAt(0).toUpperCase() + word.slice(1));
     }).join(' ');
   }
+
+  // Store the character state
+  interface CharacterState {
+    name: string;
+    path: string;
+    pathRating: number;
+    generation: number;
+    traits: Record<string, number>,
+  }
+
+  let characterState: CharacterState = {
+    name: '',
+    path: 'Humanity',
+    pathRating: 5,
+    generation: 13,
+    traits: {},
+  }
+
+  // Remove when ready
+  function onChange(newState: CharacterState): void {
+    console.log('Character state changed:', newState);
+  }
+
+  $: {
+    onChange(characterState)
+  }
 </script>
 
 <!-- Character basics -->
@@ -22,7 +48,13 @@
         <label class={labelClass} for="grid-first-name">
           Character name
         </label>
-        <input class={inputClass} id="grid-first-name" type="text" placeholder="John Wilcox">
+        <input
+          bind:value={characterState.name}
+          class={inputClass}
+          id="grid-first-name"
+          type="text"
+          placeholder="John Wilcox"
+        >
         <!-- End character name -->
         <!-- Path -->
         <div class="flex flex-wrap -mx-3">
@@ -30,7 +62,12 @@
             <label class={labelClass} for="grid-path">
               Path
             </label>
-            <input class={inputClass} id="grid-last-name" type="text" value="Humanity">
+            <input
+              bind:value={characterState.path}
+              class={inputClass}
+              id="grid-last-name"
+              type="text"
+            >
           </div>
           <!-- End path -->
           <!-- Humanity rating -->
@@ -39,9 +76,18 @@
               Rating
             </label>
             <div class="relative">
-              <select class="appearance-none select select-bordered block w-full border py-3 px-4 mb-3 leading-tight" id="grid-state">
+              <select
+                bind:value={characterState.pathRating}
+                class="appearance-none select select-bordered block w-full border py-3 px-4 mb-3 leading-tight"
+                id="grid-state"
+              >
                 {#each Array.from({ length: 10 }, (_, i) => i + 1) as pathRating}
-                  <option selected={pathRating === 5} value={pathRating}>{pathRating}</option>
+                  <option
+                    selected={pathRating === 5}
+                    value={pathRating}
+                  >
+                    {pathRating}
+                  </option>
                 {/each}
               </select>
               <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -56,9 +102,13 @@
           Generation
         </label>
         <div class="relative">
-          <select class="appearance-none select select-bordered block w-full border py-3 px-4 mb-3 leading-tight" id="grid-state">
+          <select
+            bind:value={characterState.generation}
+            class="appearance-none select select-bordered block w-full border py-3 px-4 mb-3 leading-tight"
+            id="grid-state"
+          >
             {#each Array.from({ length: 12 }, (_, i) => i + 4) as generation}
-              <option selected={generation === 13} value={generation}>{generation}</option>
+              <option value={generation}>{generation}</option>
             {/each}
           </select>
           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -80,7 +130,11 @@
         <h3 class="text-xl font-semibold mb-2">{titleCase(subcategory.name)}</h3>
         {#each subcategory.traits as trait}
           <div class="mb-2">
-            <TraitSelector trait={titleCase(trait)} />
+            <TraitSelector
+              trait={titleCase(trait)}
+              bind:selectedRating={characterState.traits[trait]}
+            />
+              <!-- bind:selectedRating={characterState.inherent[subcategory.name][trait]} -->
           </div>
         {/each}
       </div>
@@ -95,7 +149,11 @@
         <h3 class="text-xl font-semibold mb-2">{titleCase(subcategory.name)}</h3>
         {#each subcategory.traits as trait}
           <div class="mb-2">
-            <TraitSelector trait={titleCase(trait)} />
+            <TraitSelector
+              trait={titleCase(trait)}
+              bind:selectedRating={characterState.traits[trait]}
+            />
+              <!-- // bind:selectedRating={characterState.learned[subcategory.name][trait]} -->
           </div>
         {/each}
       </div>
