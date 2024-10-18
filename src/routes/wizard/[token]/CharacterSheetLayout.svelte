@@ -12,6 +12,12 @@
     }).join(' ');
   }
 
+  async function submitCharacter(event: Event): Promise<void> {
+    event.preventDefault()
+    console.log('Submitting character:', characterState.name)
+    console.log(JSON.stringify(characterState))
+  }
+
   // Store the character state
   interface CharacterState {
     name: string;
@@ -19,6 +25,7 @@
     pathRating: number;
     generation: number;
     traits: Record<string, number>,
+    ready: () => boolean;
   }
 
   let characterState: CharacterState = {
@@ -27,6 +34,9 @@
     pathRating: 5,
     generation: 13,
     traits: {},
+    ready: function(): boolean {
+      return this.name.trim() !== '' && this.path.trim() !== ''
+    }
   }
 
   // Remove when ready
@@ -41,7 +51,7 @@
 
 <!-- Character basics -->
 <div class="container mx-auto p-4">
-  <form class="w-full max-w-lg">
+  <form on:submit={submitCharacter}>
     <div class="flex flex-wrap -mx-3 mb-6">
       <!-- Character name -->
       <div class="w-full px-3 mb-6 md:mb-0">
@@ -118,45 +128,56 @@
         <!-- End generation -->
       </div> <!-- This is the missing closing div -->
     </div>
+
+    <!-- Trait selection -->
+
+    <!-- Inherent Attributes -->
+    <h2 class="text-2xl font-bold mb-4">{titleCase(characterSheet.inherent.category)}</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+      {#each characterSheet.inherent.subcategories as subcategory}
+        <div class="card p-4">
+          <h3 class="text-xl font-semibold mb-2">{titleCase(subcategory.name)}</h3>
+          {#each subcategory.traits as trait}
+            <div class="mb-2">
+              <TraitSelector
+                trait={titleCase(trait)}
+                bind:selectedRating={characterState.traits[trait]}
+              />
+                <!-- bind:selectedRating={characterState.inherent[subcategory.name][trait]} -->
+            </div>
+          {/each}
+        </div>
+      {/each}
+    </div>
+
+    <!-- Learned Abilities -->
+    <h2 class="text-2xl font-bold mb-4">{titleCase(characterSheet.learned.category)}</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {#each characterSheet.learned.subcategories as subcategory}
+        <div class="card p-4">
+          <h3 class="text-xl font-semibold mb-2">{titleCase(subcategory.name)}</h3>
+          {#each subcategory.traits as trait}
+            <div class="mb-2">
+              <TraitSelector
+                trait={titleCase(trait)}
+                bind:selectedRating={characterState.traits[trait]}
+              />
+                <!-- // bind:selectedRating={characterState.learned[subcategory.name][trait]} -->
+            </div>
+          {/each}
+        </div>
+      {/each}
+    </div>
+
+    <!-- Submit button -->
+    <div class="flex justify-center">
+      <button
+        type="submit"
+        class="btn variant-filled-error mt-6"
+        disabled={!characterState.ready()}
+      >
+        Create {characterState.name}
+      </button>
+    </div>
   </form>
-
-  <!-- Trait selection -->
-
-  <!-- Inherent Attributes -->
-  <h2 class="text-2xl font-bold mb-4">{titleCase(characterSheet.inherent.category)}</h2>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-    {#each characterSheet.inherent.subcategories as subcategory}
-      <div class="card p-4">
-        <h3 class="text-xl font-semibold mb-2">{titleCase(subcategory.name)}</h3>
-        {#each subcategory.traits as trait}
-          <div class="mb-2">
-            <TraitSelector
-              trait={titleCase(trait)}
-              bind:selectedRating={characterState.traits[trait]}
-            />
-              <!-- bind:selectedRating={characterState.inherent[subcategory.name][trait]} -->
-          </div>
-        {/each}
-      </div>
-    {/each}
-  </div>
-
-  <!-- Learned Abilities -->
-  <h2 class="text-2xl font-bold mb-4">{titleCase(characterSheet.learned.category)}</h2>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-    {#each characterSheet.learned.subcategories as subcategory}
-      <div class="card p-4">
-        <h3 class="text-xl font-semibold mb-2">{titleCase(subcategory.name)}</h3>
-        {#each subcategory.traits as trait}
-          <div class="mb-2">
-            <TraitSelector
-              trait={titleCase(trait)}
-              bind:selectedRating={characterState.traits[trait]}
-            />
-              <!-- // bind:selectedRating={characterState.learned[subcategory.name][trait]} -->
-          </div>
-        {/each}
-      </div>
-    {/each}
-  </div>
 </div>

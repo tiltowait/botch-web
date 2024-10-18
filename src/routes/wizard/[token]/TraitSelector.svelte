@@ -18,10 +18,11 @@
 <div class="flex gap-2">
   {#each circles as rating}
     <button
+      type="button"
       class="btn rating-circle"
       class:selected={rating <= selectedRating}
       on:click={() => handleClick(rating)}
-      aria-label="Rate {rating} out of 5"
+      aria-label="{trait}: {rating} dots"
     ></button>
   {/each}
 </div>
