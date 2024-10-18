@@ -4,8 +4,9 @@
   import Selector from '$lib/components/Selector.svelte'
   export let characterSheet: CharacterSheet
 
-  let labelClass = 'block uppercase tracking-wide font-bold mb-2'
-  let inputClass = 'input input-bordered block w-full border py-3 px-4 mb-3 leading-tight'
+  const labelClass = 'block uppercase tracking-wide font-bold mb-2'
+  const inputClass = 'input input-bordered block w-full border py-3 px-4 mb-3 leading-tight'
+  const splats = characterSheet.splats.map(titleCase)
 
   function titleCase(str: string): string {
     return str.toLowerCase().split(' ').map(function(word) {
@@ -29,7 +30,7 @@
   }
 
   interface CharacterState {
-    splat: 'Vampire' | 'Mortal' | 'Ghoul',
+    splat: string,
     name: string;
     grounding: Grounding;
     generation: number | null;
@@ -38,7 +39,7 @@
   }
 
   let characterState: CharacterState = {
-    splat: 'Vampire',
+    splat: splats[0],
     name: '',
     grounding: {
       path: 'Humanity',
@@ -60,7 +61,7 @@
         <!-- Splat -->
         <Selector
           label="Character type"
-          options={['Vampire', 'Mortal', 'Ghoul']}
+          options={splats}
           bind:value={characterState.splat}
           id="character-type"
         />
