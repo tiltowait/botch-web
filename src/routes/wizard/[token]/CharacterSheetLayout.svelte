@@ -15,6 +15,9 @@
   async function submitCharacter(event: Event): Promise<void> {
     event.preventDefault()
     console.log('Submitting character:', characterState.name)
+    if(characterState.splat !== 'Vampire') {
+      characterState.generation = null
+    }
     console.log(JSON.stringify(characterState))
   }
 
@@ -25,14 +28,16 @@
   }
 
   interface CharacterState {
+    splat: 'Vampire' | 'Mortal' | 'Ghoul',
     name: string;
     grounding: Grounding;
-    generation: number;
+    generation: number | null;
     traits: Record<string, number>,
     ready: () => boolean;
   }
 
   let characterState: CharacterState = {
+    splat: 'Vampire',
     name: '',
     grounding: {
       path: 'Humanity',
@@ -50,8 +55,26 @@
 <div class="container mx-auto p-4">
   <form on:submit={submitCharacter}>
     <div class="flex flex-wrap -mx-3 mb-6">
-      <!-- Character name -->
       <div class="w-full px-3 mb-6 md:mb-0">
+        <!-- Splat -->
+        <label class={labelClass} for="grid-generation">
+          Character Type
+        </label>
+        <div class="relative">
+          <select
+            bind:value={characterState.splat}
+            class="appearance-none select select-bordered block w-full border py-3 px-4 mb-3 leading-tight"
+            id="grid-state"
+          >
+            {#each ['Vampire', 'Mortal', 'Ghoul'] as splat}
+              <option value={splat}>{splat}</option>
+            {/each}
+          </select>
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+          </div>
+        </div>
+      <!-- Character name -->
         <label class={labelClass} for="grid-first-name">
           Character name
         </label>
@@ -77,7 +100,7 @@
             >
           </div>
           <!-- End grounding -->
-          <!-- Humanity rating -->
+          <!-- Grounding rating -->
           <div class="w-full md:w-1/2 px-3">
             <label class={labelClass} for="grid-humanity-rating">
               Rating
@@ -89,12 +112,7 @@
                 id="grid-state"
               >
                 {#each Array.from({ length: 10 }, (_, i) => i + 1) as groundingRating}
-                  <option
-                    selected={groundingRating === 5}
-                    value={groundingRating}
-                  >
-                    {groundingRating}
-                  </option>
+                  <option value={groundingRating}>{groundingRating}</option>
                 {/each}
               </select>
               <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -105,23 +123,25 @@
         </div>
         <!-- End humanity rating -->
         <!-- Generation -->
-        <label class={labelClass} for="grid-generation">
-          Generation
-        </label>
-        <div class="relative">
-          <select
-            bind:value={characterState.generation}
-            class="appearance-none select select-bordered block w-full border py-3 px-4 mb-3 leading-tight"
-            id="grid-state"
-          >
-            {#each Array.from({ length: 12 }, (_, i) => i + 4) as generation}
-              <option value={generation}>{generation}</option>
-            {/each}
-          </select>
-          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+        {#if characterState.splat === 'Vampire'}
+          <label class={labelClass} for="grid-generation">
+            Generation
+          </label>
+          <div class="relative">
+            <select
+              bind:value={characterState.generation}
+              class="appearance-none select select-bordered block w-full border py-3 px-4 mb-3 leading-tight"
+              id="grid-state"
+            >
+              {#each Array.from({ length: 12 }, (_, i) => i + 4) as generation}
+                <option value={generation}>{generation}</option>
+              {/each}
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+            </div>
           </div>
-        </div>
+        {/if}
         <!-- End generation -->
       </div> <!-- This is the missing closing div -->
     </div>
