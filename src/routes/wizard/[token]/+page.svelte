@@ -6,10 +6,4 @@
   const { characterSheet } = data
 </script>
 
-<!-- <div class="container h-full mx-auto flex">
-	<div class="space-y-10 text-center flex flex-col items-center">
-    <TraitSelector trait="Investigation" />
-  </div>
-</div> -->
-
 <CharacterSheetLayout {characterSheet} />
