@@ -1,8 +1,10 @@
 <script lang="ts">
-  import { CharacterSheet } from '$lib/types/CharacterSheet'
+  import { WizardSchema } from '$lib/types/WizardSchema'
   import TraitSelector from './TraitSelector.svelte'
   import Selector from '$lib/components/Selector.svelte'
-  export let characterSheet: CharacterSheet
+
+  export let wizardSchema: WizardSchema
+  const characterSheet = wizardSchema.traits // For convenience
 
   const labelClass = 'block uppercase tracking-wide font-bold mb-2'
   const inputClass = 'input input-bordered block w-full border py-3 px-4 mb-3 leading-tight'
@@ -10,8 +12,8 @@
 
   function titleCase(str: string): string {
     return str.toLowerCase().split(' ').map(function(word) {
-      return (word.charAt(0).toUpperCase() + word.slice(1));
-    }).join(' ');
+      return (word.charAt(0).toUpperCase() + word.slice(1))
+    }).join(' ')
   }
 
   async function submitCharacter(event: Event): Promise<void> {
@@ -29,12 +31,18 @@
     rating: number,
   }
 
+  type Virtue = {
+    name: string
+    rating: number
+  }
+
   interface CharacterState {
     splat: string,
     name: string;
     grounding: Grounding;
     generation: number | null;
     traits: Record<string, number>,
+    virtues: Virtue[],
     ready: () => boolean;
   }
 
@@ -47,6 +55,11 @@
     },
     generation: 13,
     traits: {},
+    virtues: (characterSheet.virtues ?? []).map(va => ({
+      name: va[0] ?? '',
+      rating: 1,
+    })),
+
     ready: function(): boolean {
       return this.name.trim() !== '' && this.grounding.path.trim() !== ''
     }
@@ -56,7 +69,8 @@
 <!-- Character basics -->
 <div class="container mx-auto p-4">
 
-  <h1 class="h1 mb-7">Create a character</h1>
+  <h1 class="h1 mb-3">New character</h1>
+  <h3 class="h3 mb-7">{wizardSchema.guildName}</h3>
 
   <form on:submit={submitCharacter}>
     <div class="flex flex-wrap -mx-3 mb-6">
@@ -120,6 +134,7 @@
       </div> <!-- This is the missing closing div -->
     </div>
 
+
     <!-- Trait selection -->
 
     <!-- Inherent Attributes -->
@@ -131,6 +146,7 @@
           {#each subcategory.traits as trait}
             <div class="mb-2">
               <TraitSelector
+                defaultRating={1}
                 trait={titleCase(trait)}
                 bind:selectedRating={characterState.traits[trait]}
               />
@@ -159,6 +175,25 @@
         </div>
       {/each}
     </div>
+
+    <!-- Virtues -->
+    {#if characterSheet.virtues}
+      <h2 class="text-2xl font-bold mt-8 mb-4">Virtues</h2>
+      <div class="flex flex-wrap -mx-3">
+        {#each characterSheet.virtues as virtueGroup, i}
+          <div class="w-full md:w-1/2 lg:w-1/3 px-3">
+            <Selector
+              options={virtueGroup}
+              bind:value={characterState.virtues[i].name}
+              id="character-type"
+            />
+            <TraitSelector
+              bind:selectedRating={characterState.virtues[i].rating}
+            />
+          </div>
+        {/each}
+      </div>
+    {/if}
 
     <!-- Submit button -->
     <div class="flex justify-center">

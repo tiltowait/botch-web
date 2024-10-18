@@ -1,18 +1,27 @@
 import type { PageLoad } from './$types'
-import characterSheetData from './vtm.json'
-import { CharacterSheet } from '$lib/types/CharacterSheet'
+import { error } from '@sveltejs/kit';
+
+import { WizardSchema } from '$lib/types/WizardSchema'
+import testData from './vtm.json'
 
 export const load: PageLoad = async ({ params, fetch }) => {
   const { token } = params
 
-  const fetchCharacterSheet = async (token: string): CharacterSheet => {
-    // await fetch ...
-    return new CharacterSheet(characterSheetData)
+  const fetchCharacterSheet = async (token: string): WizardSchema => {
+    const response = await fetch(`http://localhost:8000/character/create/${token}`)
+    if (!response.ok) {
+      const details = await response.json()
+      throw error(404, details.detail)
+    }
+
+    const data = await response.json()
+    return new WizardSchema(data)
   }
 
-  const characterSheet = await fetchCharacterSheet(token)
+  // const wizardSchema = await fetchCharacterSheet(token)
+  const wizardSchema = new WizardSchema(testData)
   return {
-    characterSheet,
+    wizardSchema,
     title: 'Create a character'
   }
 }

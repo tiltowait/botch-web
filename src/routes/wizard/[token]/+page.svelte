@@ -3,7 +3,7 @@
   import type { PageData } from './$types'
 
   export let data: PageData
-  const { characterSheet } = data
+  const { wizardSchema } = data
 </script>
 
-<CharacterSheetLayout {characterSheet} />
+<CharacterSheetLayout {wizardSchema} />
