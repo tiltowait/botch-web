@@ -12,6 +12,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
 
   const characterSheet = await fetchCharacterSheet(token)
   return {
-    characterSheet
+    characterSheet,
+    title: 'Create a character'
   }
 }

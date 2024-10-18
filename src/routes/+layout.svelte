@@ -1,7 +1,15 @@
 <script lang="ts">
+	import { page } from '$app/stores'
 	import '../app.postcss';
 	import { AppShell, AppBar } from '@skeletonlabs/skeleton';
+
+	const baseTitle = 'BOTCH'
+	$: title = $page.data.title ? `${baseTitle} | ${$page.data.title}` : baseTitle
 </script>
+
+<svelte:head>
+	<title>{title}</title>
+</svelte:head>
 
 <!-- App Shell -->
 <AppShell>
