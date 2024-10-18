@@ -160,7 +160,7 @@
     <div class="flex justify-center">
       <button
         type="submit"
-        class="btn variant-filled-error mt-6"
+        class="btn variant-filled-error mt-6 w-full"
         disabled={!characterState.ready()}
       >
         Create {characterState.name}
