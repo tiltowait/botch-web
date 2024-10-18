@@ -1,11 +1,9 @@
 <script lang="ts">
-  import { CharacterSheet } from '$lib/types/CharacterSheet'
   import CharacterSheetLayout from './CharacterSheetLayout.svelte'
-  import TraitSelector from "./TraitSelector.svelte"
+  import type { PageData } from './$types'
 
-  // TODO: Get this from +page.ts
-  import characterSheetData from './vtm.json'
-  const characterSheet = new CharacterSheet(characterSheetData)
+  export let data: PageData
+  const { characterSheet } = data
 </script>
 
 <!-- <div class="container h-full mx-auto flex">
