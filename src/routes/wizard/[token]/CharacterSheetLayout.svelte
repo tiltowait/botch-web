@@ -19,10 +19,14 @@
   }
 
   // Store the character state
+  type Grounding = {
+    path: string,
+    rating: number,
+  }
+
   interface CharacterState {
     name: string;
-    path: string;
-    pathRating: number;
+    grounding: Grounding;
     generation: number;
     traits: Record<string, number>,
     ready: () => boolean;
@@ -30,22 +34,15 @@
 
   let characterState: CharacterState = {
     name: '',
-    path: 'Humanity',
-    pathRating: 5,
+    grounding: {
+      path: 'Humanity',
+      rating: 5
+    },
     generation: 13,
     traits: {},
     ready: function(): boolean {
-      return this.name.trim() !== '' && this.path.trim() !== ''
+      return this.name.trim() !== '' && this.grounding.path.trim() !== ''
     }
-  }
-
-  // Remove when ready
-  function onChange(newState: CharacterState): void {
-    console.log('Character state changed:', newState);
-  }
-
-  $: {
-    onChange(characterState)
   }
 </script>
 
@@ -69,17 +66,17 @@
         <!-- Path -->
         <div class="flex flex-wrap -mx-3">
           <div class="w-full md:w-1/2 px-3">
-            <label class={labelClass} for="grid-path">
+            <label class={labelClass} for="grid-grounding">
               Path
             </label>
             <input
-              bind:value={characterState.path}
+              bind:value={characterState.grounding.path}
               class={inputClass}
               id="grid-last-name"
               type="text"
             >
           </div>
-          <!-- End path -->
+          <!-- End grounding -->
           <!-- Humanity rating -->
           <div class="w-full md:w-1/2 px-3">
             <label class={labelClass} for="grid-humanity-rating">
@@ -87,16 +84,16 @@
             </label>
             <div class="relative">
               <select
-                bind:value={characterState.pathRating}
+                bind:value={characterState.grounding.rating}
                 class="appearance-none select select-bordered block w-full border py-3 px-4 mb-3 leading-tight"
                 id="grid-state"
               >
-                {#each Array.from({ length: 10 }, (_, i) => i + 1) as pathRating}
+                {#each Array.from({ length: 10 }, (_, i) => i + 1) as groundingRating}
                   <option
-                    selected={pathRating === 5}
-                    value={pathRating}
+                    selected={groundingRating === 5}
+                    value={groundingRating}
                   >
-                    {pathRating}
+                    {groundingRating}
                   </option>
                 {/each}
               </select>
