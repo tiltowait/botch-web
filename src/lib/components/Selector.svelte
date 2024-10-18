@@ -1,7 +1,7 @@
 <script lang="ts">
   type OptionType = string | number | null
 
-  export let label: string
+  export let label: string | null = null
   export let options: OptionType[]
   export let value: OptionType
   export let id: string
@@ -19,9 +19,11 @@
   }
 </script>
 
-<label class={labelClass} for={id}>
-  {label}
-</label>
+{#if label}
+  <label class={labelClass} for={id}>
+    {label}
+  </label>
+{/if}
 <div class="relative">
   <select
     {id}
