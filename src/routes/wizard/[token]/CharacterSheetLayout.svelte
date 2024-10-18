@@ -55,6 +55,9 @@
 
 <!-- Character basics -->
 <div class="container mx-auto p-4">
+
+  <h1 class="h1 mb-7">Create a character</h1>
+
   <form on:submit={submitCharacter}>
     <div class="flex flex-wrap -mx-3 mb-6">
       <div class="w-full px-3 mb-6 md:mb-0">
