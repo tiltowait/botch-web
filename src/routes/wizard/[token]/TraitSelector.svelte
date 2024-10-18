@@ -1,6 +1,6 @@
 <script lang="ts">
   export let trait: string = "Trait"
-  let selectedRating: number = 0;
+  export let selectedRating: number = 0;
 
   function handleClick(rating: number): void {
     if(rating == 1 && selectedRating == 1) {
