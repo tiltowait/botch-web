@@ -1,6 +1,9 @@
 <script lang="ts">
-  export let trait: string = "Trait"
-  export let selectedRating: number = 0;
+  export let trait: string | null = null
+  export let defaultRating: number | null = null
+  export let selectedRating: number = defaultRating || 0;
+
+  const outerClass = trait ? 'grid grid-cols-[minmax(100px,auto)_1fr] items-center gap-4' : 'flex justify-center'
 
   function handleClick(rating: number): void {
     if(rating == 1 && selectedRating == 1) {
@@ -13,19 +16,21 @@
   const circles: number[] = Array.from({ length: 5 }, (_, i) => i + 1);
 </script>
 
-<div class="grid grid-cols-[minmax(100px,auto)_1fr] items-center gap-4">
-<div class="text-left">{trait}</div>
-<div class="flex gap-2">
-  {#each circles as rating}
-    <button
-      type="button"
-      class="btn rating-circle"
-      class:selected={rating <= selectedRating}
-      on:click={() => handleClick(rating)}
-      aria-label="{trait}: {rating} dots"
-    ></button>
-  {/each}
-</div>
+<div class={outerClass}>
+  {#if trait}
+    <div class="text-left">{trait}</div>
+  {/if}
+  <div class="flex gap-2">
+    {#each circles as rating}
+      <button
+        type="button"
+        class="btn rating-circle"
+        class:selected={rating <= selectedRating}
+        on:click={() => handleClick(rating)}
+        aria-label="{trait ?? 'Rating'}: {rating} dots"
+      ></button>
+    {/each}
+  </div>
 </div>
 
 <style>
