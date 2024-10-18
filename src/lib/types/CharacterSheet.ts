@@ -1,35 +1,36 @@
 interface Subcategory {
-  name: string;
-  traits: string[];
+  name: string
+  traits: string[]
 }
 
 interface Category {
-  category: string;
-  subcategories: Subcategory[];
+  category: string
+  subcategories: Subcategory[]
 }
 
-interface CharacterSheetData {
-  line: string;
-  splats: string[];
-  inherent: Category;
-  learned: Category;
+export interface CharacterSheetData {
+  line: string
+  splats: string[]
+  inherent: Category
+  learned: Category
 }
 
 export class CharacterSheet {
-  line: string;
-  splats: string[];
-  inherent: Category;
-  learned: Category;
+  line: string
+  splats: string[]
+  inherent: Category
+  learned: Category
+  virtues?: string[][]
 
   constructor(data: string | CharacterSheetData) {
-    let parsedData: CharacterSheetData;
+    let parsedData: CharacterSheetData
 
     if (typeof data === 'string') {
-      parsedData = JSON.parse(data);
+      parsedData = JSON.parse(data)
     } else {
-      parsedData = data;
+      parsedData = data
     }
 
-    Object.assign(this, parsedData);
+    Object.assign(this, parsedData)
   }
 }
