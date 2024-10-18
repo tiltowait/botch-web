@@ -32,10 +32,10 @@
             </label>
             <input class={inputClass} id="grid-last-name" type="text" value="Humanity">
           </div>
-        <!-- End path -->
-        <!-- Humanity rating -->
+          <!-- End path -->
+          <!-- Humanity rating -->
           <div class="w-full md:w-1/2 px-3">
-            <label class={labelClass} for="grid-generation">
+            <label class={labelClass} for="grid-humanity-rating">
               Rating
             </label>
             <div class="relative">
@@ -66,23 +66,12 @@
           </div>
         </div>
         <!-- End generation -->
-      </div>
-    </div>
-    <div class="flex flex-wrap -mx-3 mb-2">
-      <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-zip">
-          Zip
-        </label>
-        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-zip" type="text" placeholder="90210">
-      </div>
+      </div> <!-- This is the missing closing div -->
     </div>
   </form>
-</div>
 
+  <!-- Trait selection -->
 
-<!-- Trait selection -->
-
-<div class="container mx-auto p-4">
   <!-- Inherent Attributes -->
   <h2 class="text-2xl font-bold mb-4">{titleCase(characterSheet.inherent.category)}</h2>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
