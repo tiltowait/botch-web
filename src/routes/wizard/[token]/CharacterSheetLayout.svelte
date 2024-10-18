@@ -1,0 +1,115 @@
+<script lang="ts">
+  import { CharacterSheet } from '$lib/types/CharacterSheet'
+  import TraitSelector from './TraitSelector.svelte'
+  export let characterSheet: CharacterSheet
+
+  let labelClass = 'block uppercase tracking-wide font-bold mb-2'
+  let inputClass = 'input input-bordered block w-full border py-3 px-4 mb-3 leading-tight'
+
+  function titleCase(str: string): string {
+    return str.toLowerCase().split(' ').map(function(word) {
+      return (word.charAt(0).toUpperCase() + word.slice(1));
+    }).join(' ');
+  }
+</script>
+
+<!-- Character basics -->
+<div class="container mx-auto p-4">
+  <form class="w-full max-w-lg">
+    <div class="flex flex-wrap -mx-3 mb-6">
+      <!-- Character name -->
+      <div class="w-full px-3 mb-6 md:mb-0">
+        <label class={labelClass} for="grid-first-name">
+          Character name
+        </label>
+        <input class={inputClass} id="grid-first-name" type="text" placeholder="John Wilcox">
+        <!-- End character name -->
+        <!-- Path -->
+        <div class="flex flex-wrap -mx-3">
+          <div class="w-full md:w-1/2 px-3">
+            <label class={labelClass} for="grid-path">
+              Path
+            </label>
+            <input class={inputClass} id="grid-last-name" type="text" value="Humanity">
+          </div>
+        <!-- End path -->
+        <!-- Humanity rating -->
+          <div class="w-full md:w-1/2 px-3">
+            <label class={labelClass} for="grid-generation">
+              Rating
+            </label>
+            <div class="relative">
+              <select class="appearance-none select select-bordered block w-full border py-3 px-4 mb-3 leading-tight" id="grid-state">
+                {#each Array.from({ length: 10 }, (_, i) => i + 1) as pathRating}
+                  <option selected={pathRating === 5} value={pathRating}>{pathRating}</option>
+                {/each}
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End humanity rating -->
+        <!-- Generation -->
+        <label class={labelClass} for="grid-generation">
+          Generation
+        </label>
+        <div class="relative">
+          <select class="appearance-none select select-bordered block w-full border py-3 px-4 mb-3 leading-tight" id="grid-state">
+            {#each Array.from({ length: 12 }, (_, i) => i + 4) as generation}
+              <option selected={generation === 13} value={generation}>{generation}</option>
+            {/each}
+          </select>
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+          </div>
+        </div>
+        <!-- End generation -->
+      </div>
+    </div>
+    <div class="flex flex-wrap -mx-3 mb-2">
+      <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-zip">
+          Zip
+        </label>
+        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-zip" type="text" placeholder="90210">
+      </div>
+    </div>
+  </form>
+</div>
+
+
+<!-- Trait selection -->
+
+<div class="container mx-auto p-4">
+  <!-- Inherent Attributes -->
+  <h2 class="text-2xl font-bold mb-4">{titleCase(characterSheet.inherent.category)}</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+    {#each characterSheet.inherent.subcategories as subcategory}
+      <div class="card p-4">
+        <h3 class="text-xl font-semibold mb-2">{titleCase(subcategory.name)}</h3>
+        {#each subcategory.traits as trait}
+          <div class="mb-2">
+            <TraitSelector trait={titleCase(trait)} />
+          </div>
+        {/each}
+      </div>
+    {/each}
+  </div>
+
+  <!-- Learned Abilities -->
+  <h2 class="text-2xl font-bold mb-4">{titleCase(characterSheet.learned.category)}</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    {#each characterSheet.learned.subcategories as subcategory}
+      <div class="card p-4">
+        <h3 class="text-xl font-semibold mb-2">{titleCase(subcategory.name)}</h3>
+        {#each subcategory.traits as trait}
+          <div class="mb-2">
+            <TraitSelector trait={titleCase(trait)} />
+          </div>
+        {/each}
+      </div>
+    {/each}
+  </div>
+</div>
