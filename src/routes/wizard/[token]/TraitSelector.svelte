@@ -14,6 +14,15 @@
   }
 
   const circles: number[] = Array.from({ length: 5 }, (_, i) => i + 1);
+
+  const traitMappings: Record<string, string> = {
+    'Animalken': 'Animal Ken',
+    'Herbalwisdom': 'Herbal Wisdom',
+  }
+  if (trait) {
+    trait = traitMappings[trait] || trait
+  }
+
 </script>
 
 <div class={outerClass}>
