@@ -2,7 +2,6 @@
   import { WizardSchema } from '$lib/types/WizardSchema'
   import TraitSelector from './TraitSelector.svelte'
   import Selector from '$lib/components/Selector.svelte'
-  import { error } from '@sveltejs/kit';
 
   export let token: string
   export let wizardSchema: WizardSchema
@@ -20,6 +19,7 @@
 
   async function submitCharacter(event: Event): Promise<void> {
     event.preventDefault()
+
     if(characterState.splat !== 'Vampire') {
       characterState.generation = null
     }
@@ -35,10 +35,9 @@
       const result = await response.json()
 
       if (!response.ok) {
-        throw error(response.status, result.detail)
+        throw new Error(result.detail || `Failed to create ${characterState.name}`)
       }
 
-      console.log('Character created successfully:', result)
     } catch (err) {
       console.log('ERROR:', err)
     }
