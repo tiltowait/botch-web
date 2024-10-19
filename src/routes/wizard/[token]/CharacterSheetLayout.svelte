@@ -95,7 +95,12 @@
 <div class="container mx-auto p-4">
 
   <h1 class="h1 mb-3">New character</h1>
-  <h3 class="h3 mb-7">{wizardSchema.guildName}</h3>
+  <h3 class="flex h3 items-center mb-9">
+    {#if wizardSchema.guildIcon}
+      <img class="h-[1.5em] w-auto mr-2" src={wizardSchema.guildIcon} alt={wizardSchema.guildName}>
+    {/if}
+    {wizardSchema.guildName}
+  </h3>
 
   <form on:submit={submitCharacter}>
     <div class="flex flex-wrap -mx-3 mb-6">
