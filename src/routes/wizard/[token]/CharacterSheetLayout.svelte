@@ -2,7 +2,9 @@
   import { WizardSchema } from '$lib/types/WizardSchema'
   import TraitSelector from './TraitSelector.svelte'
   import Selector from '$lib/components/Selector.svelte'
+  import { error } from '@sveltejs/kit';
 
+  export let token: string
   export let wizardSchema: WizardSchema
   const characterSheet = wizardSchema.traits // For convenience
 
@@ -18,11 +20,28 @@
 
   async function submitCharacter(event: Event): Promise<void> {
     event.preventDefault()
-    console.log('Submitting character:', characterState.name)
     if(characterState.splat !== 'Vampire') {
       characterState.generation = null
     }
-    console.log(JSON.stringify(characterState))
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/character/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(characterState),
+      })
+      const result = await response.json()
+
+      if (!response.ok) {
+        throw error(response.status, result.detail)
+      }
+
+      console.log('Character created successfully:', result)
+    } catch (err) {
+      console.log('ERROR:', err)
+    }
   }
 
   // Store the character state
@@ -37,9 +56,12 @@
   }
 
   interface CharacterState {
+    token: string,
     splat: string,
     name: string;
     grounding: Grounding;
+    health: number,
+    willpower: number,
     generation: number | null;
     traits: Record<string, number>,
     virtues: Virtue[],
@@ -47,12 +69,15 @@
   }
 
   let characterState: CharacterState = {
+    token: token,
     splat: splats[0],
     name: '',
     grounding: {
       path: 'Humanity',
       rating: 5
     },
+    health: 7,
+    willpower: 5,
     generation: 13,
     traits: {},
     virtues: (characterSheet.virtues ?? []).map(va => ({
@@ -121,6 +146,30 @@
           <!-- End humanity rating -->
         </div>
         <!-- Rating wrapper -->
+        <!-- HP/WP wrapper -->
+        <div class="flex flex-wrap -mx-3">
+          <!-- HP -->
+          <div class="w-full md:w-1/2 px-3">
+            <Selector
+              label="Health"
+              options={Array.from({ length: 10 }, (_, i) => i + 1)}
+              bind:value={characterState.health}
+              id="health"
+            />
+          </div>
+          <!-- End HP -->
+          <!-- WP -->
+          <div class="w-full md:w-1/2 px-3">
+            <Selector
+              label="Willpower"
+              options={Array.from({ length: 10 }, (_, i) => i + 1)}
+              bind:value={characterState.willpower}
+              id="willpower"
+            />
+          </div>
+          <!-- End WP -->
+        </div>
+        <!-- End HP/WP wrapper -->
         <!-- Generation -->
         {#if characterState.splat === 'Vampire'}
           <Selector

@@ -18,9 +18,10 @@ export const load: PageLoad = async ({ params, fetch }) => {
     return new WizardSchema(data)
   }
 
-  // const wizardSchema = await fetchCharacterSheet(token)
-  const wizardSchema = new WizardSchema(testData)
+  const wizardSchema = await fetchCharacterSheet(token)
+  // const wizardSchema = new WizardSchema(testData)
   return {
+    token,
     wizardSchema,
     title: 'Create a character'
   }
