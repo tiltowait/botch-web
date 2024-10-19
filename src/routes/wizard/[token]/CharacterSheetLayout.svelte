@@ -22,8 +22,24 @@
     }).join(' ')
   }
 
+  async function characterAllowed(): Promise<boolean> {
+    const response = await sendPost('http://127.0.0.1:8000/character/valid-name', {
+      token: characterState.token,
+      name: characterState.name
+    })
+    const check = await response.json()
+    return check.valid
+  }
+
   async function submitCharacter(event: Event): Promise<void> {
     event.preventDefault()
+
+    // Check if the user is allowed to create this character
+    const characterAlreadyExists = await characterAllowed()
+    if (characterAlreadyExists) {
+      alert(`You already have a character named ${characterState.name}!`)
+      return
+    }
 
     if(characterState.splat !== 'Vampire') {
       characterState.generation = null
