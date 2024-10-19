@@ -1,5 +1,6 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
+  import { PUBLIC_BOTCH_API_URL } from '$env/static/public'
 
   import { sendPost } from '$lib/httpMethods'
   import { creationInfoStore } from '$lib/stores/CreationStore'
@@ -28,7 +29,7 @@
   }
 
   async function characterAllowed(): Promise<ValidationResponse> {
-    const response = await sendPost('http://127.0.0.1:8000/character/valid-name', {
+    const response = await sendPost(`${PUBLIC_BOTCH_API_URL}/character/valid-name`, {
       token: characterState.token,
       name: characterState.name
     })
@@ -50,7 +51,7 @@
       characterState.generation = null
     }
 
-    const response = await sendPost('http://127.0.0.1:8000/character/create', characterState)
+    const response = await sendPost(`${PUBLIC_BOTCH_API_URL}/character/create`, characterState)
     console.log(await response.json())
 
     creationInfoStore.set({
