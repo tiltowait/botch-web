@@ -22,22 +22,27 @@
     }).join(' ')
   }
 
-  async function characterAllowed(): Promise<boolean> {
+  interface ValidationResponse {
+    valid: boolean,
+    details?: string
+  }
+
+  async function characterAllowed(): Promise<ValidationResponse> {
     const response = await sendPost('http://127.0.0.1:8000/character/valid-name', {
       token: characterState.token,
       name: characterState.name
     })
-    const check = await response.json()
-    return check.valid
+    const check: ValidationResponse = await response.json()
+    return check
   }
 
   async function submitCharacter(event: Event): Promise<void> {
     event.preventDefault()
 
     // Check if the user is allowed to create this character
-    const characterAlreadyExists = await characterAllowed()
-    if (characterAlreadyExists) {
-      alert(`You already have a character named ${characterState.name}!`)
+    const validity = await characterAllowed()
+    if (!validity.valid) {
+      alert(validity.details ?? `${characterState.name} is not a valid name!`)
       return
     }
 
@@ -131,6 +136,7 @@
         class={inputClass}
         id="character-name"
         type="text"
+        maxlength="37"
         placeholder="John Wilcox"
       >
       <!-- End character name -->
