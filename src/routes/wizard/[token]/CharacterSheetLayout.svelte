@@ -1,7 +1,9 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
 
+  import { sendPost } from '$lib/httpMethods'
   import { creationInfoStore } from '$lib/stores/CreationStore'
+
   import { WizardSchema } from '$lib/types/WizardSchema'
   import TraitSelector from './TraitSelector.svelte'
   import Selector from '$lib/components/Selector.svelte'
@@ -27,30 +29,15 @@
       characterState.generation = null
     }
 
-    try {
-      const response = await fetch('http://127.0.0.1:8000/character/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(characterState),
-      })
-      const result = await response.json()
+    const response = await sendPost('http://127.0.0.1:8000/character/create', characterState)
+    console.log(await response.json())
 
-      if (!response.ok) {
-        throw new Error(result.detail || `Failed to create ${characterState.name}`)
-      }
-
-      creationInfoStore.set({
-        guildName: wizardSchema.guildName,
-        guildIcon: wizardSchema.guildIcon,
-        characterName: characterState.name,
-      })
-      await goto('/wizard/success')
-
-    } catch (err) {
-      console.log('ERROR:', err)
-    }
+    creationInfoStore.set({
+      guildName: wizardSchema.guildName,
+      guildIcon: wizardSchema.guildIcon,
+      characterName: characterState.name,
+    })
+    await goto('/wizard/success')
   }
 
   // Store the character state
