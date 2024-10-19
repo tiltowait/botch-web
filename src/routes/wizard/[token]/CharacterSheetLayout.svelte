@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { goto } from '$app/navigation'
+
+  import { creationInfoStore } from '$lib/stores/CreationStore'
   import { WizardSchema } from '$lib/types/WizardSchema'
   import TraitSelector from './TraitSelector.svelte'
   import Selector from '$lib/components/Selector.svelte'
@@ -37,6 +40,13 @@
       if (!response.ok) {
         throw new Error(result.detail || `Failed to create ${characterState.name}`)
       }
+
+      creationInfoStore.set({
+        guildName: wizardSchema.guildName,
+        guildIcon: wizardSchema.guildIcon,
+        characterName: characterState.name,
+      })
+      await goto('/wizard/success')
 
     } catch (err) {
       console.log('ERROR:', err)
@@ -192,7 +202,7 @@
   <h2 class="text-2xl font-bold mb-4">{titleCase(characterSheet.inherent.category)}</h2>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
     {#each characterSheet.inherent.subcategories as subcategory}
-      <div class="card p-4">
+      <div class="card variant-ghost p-4">
         <h3 class="text-xl font-semibold mb-2">{titleCase(subcategory.name)}</h3>
         {#each subcategory.traits as trait}
           <div class="mb-2">
@@ -212,7 +222,7 @@
   <h2 class="text-2xl font-bold mb-4">{titleCase(characterSheet.learned.category)}</h2>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
     {#each characterSheet.learned.subcategories as subcategory}
-      <div class="card p-4">
+      <div class="card variant-ghost p-4">
         <h3 class="text-xl font-semibold mb-2">{titleCase(subcategory.name)}</h3>
         {#each subcategory.traits as trait}
           <div class="mb-2">
