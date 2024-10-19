@@ -251,7 +251,7 @@
     <h2 class="text-2xl font-bold mt-8 mb-4">Virtues</h2>
     <div class="flex flex-wrap -mx-3">
       {#each characterSheet.virtues as virtueGroup, i}
-        <div class="w-full md:w-1/2 lg:w-1/3 px-3">
+        <div class="w-full md:w-1/2 lg:w-1/3 px-3 mb-2">
           <Selector
             options={virtueGroup}
             bind:value={characterState.virtues[i].name}
