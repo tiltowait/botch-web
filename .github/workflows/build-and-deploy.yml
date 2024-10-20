@@ -1,4 +1,4 @@
-name: build-attested-image
+name: build-and-scan-attested-image
 
 on:
   push:
@@ -50,10 +50,19 @@ jobs:
   security:
     needs: build
     runs-on: ubuntu-latest
+    env:
+      REGISTRY: ghcr.io
+      IMAGE_NAME: ${{ github.repository }}
     steps:
-    - name: Run Snyk Container
-      uses: snyk/actions/docker@master
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      with:
-        image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run Snyk Container
+        uses: snyk/actions/docker@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
