@@ -1,6 +1,5 @@
 import type { RequestHandler } from '@sveltejs/kit'
 import { json } from '@sveltejs/kit'
-import { PUBLIC_BOTCH_API_URL } from '$env/static/public'
 import { sendPost } from '$lib/httpMethods'
 
 export const POST: RequestHandler = async ({ request }) => {

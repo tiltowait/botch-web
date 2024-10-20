@@ -1,7 +1,5 @@
 FROM node:22-alpine AS builder
 
-ARG PUBLIC_BOTCH_API_URL=https://127.0.0.1:8000
-
 WORKDIR /app
 
 COPY . .
