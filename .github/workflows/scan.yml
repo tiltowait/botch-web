@@ -8,6 +8,7 @@ on:
 
 jobs:
   security:
+    needs: build
     runs-on: ubuntu-latest
     env:
       REGISTRY: ghcr.io
@@ -19,21 +20,9 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Extract metadata for the Docker image
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-      - name: Echo REGISTRY
-        run: echo ${{ env.REGISTRY }}
-      - name: Echo IMAGE_NAME
-        run: echo ${{ env.IMAGE_NAME }}
-      - name: Echo Docker tags
-        run: echo ${{ steps.meta.outputs.tags }}
       - name: Run Snyk Container
         uses: snyk/actions/docker@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          # image: ${{ steps.meta.outputs.tags }}
           image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
