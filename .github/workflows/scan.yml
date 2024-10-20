@@ -1,4 +1,4 @@
-name: build-and-scan-attested-image
+name: snyk-container
 
 on:
   push:
@@ -30,4 +30,3 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.tags }}
-          args: --file=Dockerfile
