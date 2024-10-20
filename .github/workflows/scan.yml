@@ -24,6 +24,12 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      - name: Echo REGISTRY
+        run: echo ${{ env.REGISTRY }}
+      - name: Echo IMAGE_NAME
+        run: echo ${{ env.IMAGE_NAME }}
+      - name: Echo Docker tags
+        run: echo ${{ steps.meta.outputs.tags }}
       - name: Run Snyk Container
         uses: snyk/actions/docker@master
         env:
