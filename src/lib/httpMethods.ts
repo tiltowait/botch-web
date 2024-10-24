@@ -1,3 +1,6 @@
+import { error } from '@sveltejs/kit'
+import { env } from '$env/dynamic/public'
+
 export const sendPost = async <T>(
   url: string,
   data: T,
@@ -33,4 +36,18 @@ export const sendProxiedPost = async <T>(
     '/api/proxy',
     { path, body, errorText }
   )
+}
+
+export const generateUrl = (token: string, path: string): string => {
+  let domain: string
+  if (env.PUBLIC_TESTING) {
+    domain = 'localhost:8000'
+  } else {
+    const idx = token.indexOf('_') // Presence is guaranteed
+    if (idx === -1) {
+      throw error(404, 'Malformed token.')
+    }
+    domain = token.substring(0, idx)
+  }
+  return `http://${domain}${path}`
 }

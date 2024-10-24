@@ -1,8 +1,7 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
-  import { env } from '$env/dynamic/public'
 
-  import { sendProxiedPost } from '$lib/httpMethods'
+  import { sendProxiedPost, generateUrl } from '$lib/httpMethods'
   import { creationInfoStore } from '$lib/stores/CreationStore'
 
   import { WizardSchema } from '$lib/types/WizardSchema'
@@ -29,9 +28,8 @@
     details?: string
   }
 
-
   async function characterAllowed(): Promise<ValidationResponse> {
-    const response = await sendProxiedPost(`${env.PUBLIC_BOTCH_API_URL}/character/valid-name`, {
+    const response = await sendProxiedPost(generateUrl(token, '/character/valid-name'), {
       token: characterState.token,
       name: characterState.name
     })
@@ -53,7 +51,7 @@
       characterState.generation = null
     }
 
-    const response = await sendProxiedPost(`${env.PUBLIC_BOTCH_API_URL}/character/create`, characterState)
+    const response = await sendProxiedPost(generateUrl(token, '/character/create'), characterState)
     console.log(await response.json())
 
     creationInfoStore.set({
