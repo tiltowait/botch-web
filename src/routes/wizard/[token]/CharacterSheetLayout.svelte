@@ -6,6 +6,7 @@
   import { creationInfoStore } from '$lib/stores/CreationStore'
 
   import { WizardSchema } from '$lib/types/WizardSchema'
+
   import TraitSelector from './TraitSelector.svelte'
   import Selector from '$lib/components/Selector.svelte'
 
@@ -74,17 +75,23 @@
     rating: number
   }
 
+  interface SpecialTraitValue {
+    name: string
+    value: string | number
+  }
+
   interface CharacterState {
-    token: string,
-    splat: string,
-    name: string;
-    grounding: Grounding;
-    health: number,
-    willpower: number,
-    generation: number | null;
-    traits: Record<string, number>,
-    virtues: Virtue[],
-    ready: () => boolean;
+    token: string
+    splat: string
+    name: string
+    grounding: Grounding
+    health: number
+    willpower: number
+    generation: number | null
+    traits: Record<string, number>
+    virtues: Virtue[]
+    special: Record<string, string | number>
+    ready: () => boolean
   }
 
   let characterState: CharacterState = {
@@ -103,10 +110,27 @@
       name: va[0] ?? '',
       rating: 1,
     })),
+    special: initialSpecialValues(splats[0]),
 
     ready: function(): boolean {
       return this.name.trim() !== '' && this.grounding.path.trim() !== ''
     }
+  }
+
+  function initialSpecialValues(splat: string): Record<string, string | number> {
+    return Object.fromEntries(
+      (characterSheet.special ?? [])
+        .filter(special => special.splat.toLowerCase() === splat.toLowerCase())
+        .flatMap(special => special.traits)
+        .map(trait => [trait.name, trait.default])
+    )
+  }
+
+  let previousSplat = characterState.splat
+  $: if (characterState.splat !== previousSplat) {
+    characterState.special = initialSpecialValues(characterState.splat)
+    console.log(characterState.special)
+    previousSplat = characterState.splat
   }
 </script>
 
@@ -193,16 +217,23 @@
         <!-- End WP -->
       </div>
       <!-- End HP/WP wrapper -->
-      <!-- Generation -->
-      {#if characterState.splat === 'Vampire'}
-        <Selector
-          label="Generation"
-          options={Array.from({ length: 12 }, (_, i) => i + 4)}
-          bind:value={characterState.generation}
-          id="generation"
-        />
-      {/if}
-      <!-- End generation -->
+
+      <!-- Splat-specific -->
+      {#each characterSheet.special ?? [] as special}
+        {#if titleCase(special.splat) === characterState.splat}
+          {#each special.traits as trait}
+            {#if trait.type === 'select'}
+              <Selector
+                label={trait.label}
+                options={trait.options ?? []}
+                bind:value={characterState.special[trait.name]}
+                id={trait.name}
+              />
+            {/if}
+          {/each}
+        {/if}
+      {/each}
+      <!-- End splat-specific -->
     </div> <!-- This is the missing closing div -->
   </div>
 

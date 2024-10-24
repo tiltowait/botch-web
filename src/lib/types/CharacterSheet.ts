@@ -8,11 +8,25 @@ interface Category {
   subcategories: Subcategory[]
 }
 
+export interface SpecialTrait {
+  label: string
+  name: string
+  type: string
+  options?: string[] | number[]
+  default: string | number
+}
+
+interface Special {
+  splat: string
+  traits: SpecialTrait[]
+}
+
 export interface CharacterSheetData {
   line: string
   splats: string[]
   inherent: Category
   learned: Category
+  special?: Special[]
 }
 
 export class CharacterSheet {
@@ -21,6 +35,7 @@ export class CharacterSheet {
   inherent: Category
   learned: Category
   virtues?: string[][]
+  special?: Special[]
 
   constructor(data: string | CharacterSheetData) {
     let parsedData: CharacterSheetData
