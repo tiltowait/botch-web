@@ -47,7 +47,7 @@ export const generateUrl = (token: string, path: string): string => {
     if (idx === -1) {
       throw error(404, 'Malformed token.')
     }
-    domain = token.substring(0, idx)
+    domain = token.substring(0, idx) + ':8000'
   }
   return `http://${domain}${path}`
 }

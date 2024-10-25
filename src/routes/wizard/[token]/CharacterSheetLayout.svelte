@@ -73,11 +73,6 @@
     rating: number
   }
 
-  interface SpecialTraitValue {
-    name: string
-    value: string | number
-  }
-
   interface CharacterState {
     token: string
     splat: string
