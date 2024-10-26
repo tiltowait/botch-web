@@ -131,7 +131,7 @@
 <h1 class="h1 mb-3">New character</h1>
 <h3 class="flex h3 items-center mb-9">
   {#if wizardSchema.guildIcon}
-    <img class="h-[1.5em] w-auto mr-2" src={wizardSchema.guildIcon} alt={wizardSchema.guildName}>
+    <img class="rounded-full h-[1.5em] w-auto mr-2" src={wizardSchema.guildIcon} alt={wizardSchema.guildName}>
   {/if}
   {wizardSchema.guildName}
 </h3>

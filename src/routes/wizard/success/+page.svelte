@@ -26,7 +26,7 @@ onMount(() => {
   {#if characterInfo}
     <h3 class="flex h3 items-center mb-9">
       {#if characterInfo.guildIcon}
-        <img class="h-[1.5em] w-auto mr-2" src={characterInfo.guildIcon} alt={characterInfo.guildName}>
+        <img class="rounded-full h-[1.5em] w-auto mr-2" src={characterInfo.guildIcon} alt={characterInfo.guildName}>
       {/if}
       {characterInfo.guildName}
     </h3>
