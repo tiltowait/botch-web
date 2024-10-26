@@ -67,3 +67,15 @@ jobs:
         with:
           image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           command: monitor
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    container: ghcr.io/railwayapp/cli:latest
+    env:
+      SERVICE_ID: ${{ secrets.SERVICE_ID }}
+      RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
+    steps:
+      - name: Deploy new image
+        run: railway redeploy -y --service ${{ env.SERVICE_ID }}
