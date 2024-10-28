@@ -24,6 +24,7 @@ interface Special {
 export interface CharacterSheetData {
   line: string
   splats: string[]
+  grounding: Record<string, string>
   inherent: Category
   learned: Category
   special?: Special[]
@@ -32,6 +33,7 @@ export interface CharacterSheetData {
 export class CharacterSheet {
   line: string
   splats: string[]
+  grounding: Record<string, string>
   inherent: Category
   learned: Category
   virtues?: string[][]

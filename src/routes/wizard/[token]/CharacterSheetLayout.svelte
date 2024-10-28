@@ -91,10 +91,7 @@
     token: token,
     splat: splats[0],
     name: '',
-    grounding: {
-      path: 'Humanity',
-      rating: 5
-    },
+    grounding: getDefaultGrounding(splats[0]),
     health: 7,
     willpower: 5,
     generation: 13,
@@ -119,10 +116,17 @@
     )
   }
 
+  function getDefaultGrounding(splat: string): Grounding {
+    return {
+      path: characterSheet.grounding[splat.toLowerCase()],
+      rating: characterSheet.line == 'wod' ? 5 : 7
+    }
+  }
+
   let previousSplat = characterState.splat
   $: if (characterState.splat !== previousSplat) {
     characterState.special = initialSpecialValues(characterState.splat)
-    console.log(characterState.special)
+    characterState.grounding = getDefaultGrounding(characterState.splat)
     previousSplat = characterState.splat
   }
 </script>
