@@ -110,7 +110,7 @@
   function initialSpecialValues(splat: string): Record<string, string | number> {
     return Object.fromEntries(
       (characterSheet.special ?? [])
-        .filter(special => special.splat.toLowerCase() === splat.toLowerCase())
+        .filter(special => special.splats.includes(splat.toLowerCase()))
         .flatMap(special => special.traits)
         .map(trait => [trait.name, trait.default])
     )
@@ -217,7 +217,7 @@
 
       <!-- Splat-specific -->
       {#each characterSheet.special ?? [] as special}
-        {#if titleCase(special.splat) === characterState.splat}
+        {#if special.splats.includes(characterState.splat?.toLowerCase())}
           {#each special.traits as trait}
             {#if trait.type === 'select'}
               <Selector

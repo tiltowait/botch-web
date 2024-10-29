@@ -17,7 +17,7 @@ export interface SpecialTrait {
 }
 
 interface Special {
-  splat: string
+  splats: string[]
   traits: SpecialTrait[]
 }
 
