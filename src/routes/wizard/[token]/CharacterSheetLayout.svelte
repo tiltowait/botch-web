@@ -84,7 +84,7 @@
     generation: number | null
     traits: Record<string, number>
     virtues: Virtue[]
-    special: Record<string, string | number>
+    special: Record<string, string | number | Record<string, number>>
     ready: () => boolean
   }
 
@@ -108,15 +108,41 @@
     }
   }
 
-  function initialSpecialValues(splat: string): Record<string, string | number> {
-    return Object.fromEntries(
-      (characterSheet.special ?? [])
-        .filter(special => special.splats.includes(splat.toLowerCase()))
-        .flatMap(special => special.traits)
-        .filter(trait => trait.type !== 'trait-group')
-        .map(trait => [trait.name, trait.default])
-    )
+  // function initialSpecialValues(splat: string): Record<string, string | number> {
+  //   return Object.fromEntries(
+  //     (characterSheet.special ?? [])
+  //       .filter(special => special.splats.includes(splat.toLowerCase()))
+  //       .flatMap(special => special.traits)
+  //       .filter(trait => trait.type !== 'trait-group')
+  //       .map(trait => [trait.name, trait.default])
+  //   )
+  // }
+
+  function initialSpecialValues(splat: string): Record<string, string | number | Record<string, number>> {
+    const result: Record<string, string | number | Record<string, number>> = {}
+
+    const relevantSpecials = (characterSheet.special ?? [])
+
+    for (const special of relevantSpecials) {
+      if (!special.splats.includes(splat.toLowerCase())) continue
+
+      for (const trait of special.traits) {
+        if (trait.type === 'trait-group') {
+          const groupValues: Record<string, number> = {}
+          for (const item of (trait.items ?? [])) {
+            groupValues[item] = trait.default ?? 0
+          }
+          result[trait.name] = groupValues
+        } else {
+          result[trait.name] = trait.default ?? 0
+        }
+      }
+    }
+
+    return result
   }
+
+
 
   function getDefaultGrounding(splat: string): Grounding {
     return {
@@ -302,29 +328,26 @@
       {#each special.traits as trait}
         {#if trait.type === 'trait-group'}
 
-
           <h2 class="text-2xl font-bold mt-8 mb-4">{trait.label}</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div class="card variant-ghost p-4">
-                {#each trait.items ?? [] as item}
-                  <div class="mb-2">
-                    <TraitSelector
-                      defaultRating={trait.default}
-                      trait={item}
-                      bind:selectedRating={characterState.special[item]}
-                    />
-                  </div>
-                {/each}
-              </div>
+            <div class="card variant-ghost p-4">
+              {#each trait.items ?? [] as item}
+                <div class="mb-2">
+                  <TraitSelector
+                    defaultRating={trait.default}
+                    trait={item}
+                    bind:selectedRating={characterState.special[trait.name][item]}
+                  />
+                </div>
+              {/each}
+            </div>
           </div>
-
-
 
         {/if}
       {/each}
     {/if}
   {/each}
-  <!-- End optional trait groups
+  <!-- End optional trait groups -->
 
   <!-- Submit button -->
   <div class="flex justify-center">
