@@ -39,6 +39,7 @@
 
   async function submitCharacter(event: Event): Promise<void> {
     event.preventDefault()
+    console.log(characterState)
 
     // Check if the user is allowed to create this character
     const validity = await characterAllowed()
@@ -112,6 +113,7 @@
       (characterSheet.special ?? [])
         .filter(special => special.splats.includes(splat.toLowerCase()))
         .flatMap(special => special.traits)
+        .filter(trait => trait.type !== 'trait-group')
         .map(trait => [trait.name, trait.default])
     )
   }
@@ -269,7 +271,6 @@
               trait={titleCase(trait)}
               bind:selectedRating={characterState.traits[trait]}
             />
-              <!-- // bind:selectedRating={characterState.learned[subcategory.name][trait]} -->
           </div>
         {/each}
       </div>
@@ -294,6 +295,36 @@
       {/each}
     </div>
   {/if}
+
+  <!-- Optional trait groups -->
+  {#each characterSheet.special ?? [] as special}
+    {#if special.splats.includes(characterState.splat?.toLowerCase())}
+      {#each special.traits as trait}
+        {#if trait.type === 'trait-group'}
+
+
+          <h2 class="text-2xl font-bold mt-8 mb-4">{trait.label}</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div class="card variant-ghost p-4">
+                {#each trait.items ?? [] as item}
+                  <div class="mb-2">
+                    <TraitSelector
+                      defaultRating={trait.default}
+                      trait={item}
+                      bind:selectedRating={characterState.special[item]}
+                    />
+                  </div>
+                {/each}
+              </div>
+          </div>
+
+
+
+        {/if}
+      {/each}
+    {/if}
+  {/each}
+  <!-- End optional trait groups
 
   <!-- Submit button -->
   <div class="flex justify-center">

@@ -14,6 +14,9 @@ export interface SpecialTrait {
   type: string
   options?: string[] | number[]
   default: string | number
+  items?: string[]
+  min?: number
+  max?: number
 }
 
 interface Special {
