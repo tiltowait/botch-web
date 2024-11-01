@@ -108,16 +108,6 @@
     }
   }
 
-  // function initialSpecialValues(splat: string): Record<string, string | number> {
-  //   return Object.fromEntries(
-  //     (characterSheet.special ?? [])
-  //       .filter(special => special.splats.includes(splat.toLowerCase()))
-  //       .flatMap(special => special.traits)
-  //       .filter(trait => trait.type !== 'trait-group')
-  //       .map(trait => [trait.name, trait.default])
-  //   )
-  // }
-
   function initialSpecialValues(splat: string): Record<string, string | number | Record<string, number>> {
     const result: Record<string, string | number | Record<string, number>> = {}
 
@@ -141,8 +131,6 @@
 
     return result
   }
-
-
 
   function getDefaultGrounding(splat: string): Grounding {
     return {
