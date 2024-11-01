@@ -90,7 +90,7 @@
 
   let characterState: CharacterState = {
     token: token,
-    splat: splats[0],
+    splat: '',
     name: '',
     grounding: getDefaultGrounding(splats[0]),
     health: 7,
@@ -165,186 +165,192 @@
         options={splats}
         bind:value={characterState.splat}
         id="character-type"
+        placeholder="Select a character type"
       />
-      <!-- Character name -->
-      <label class={labelClass} for="character-name">
-        Character name
-      </label>
-      <input
-        bind:value={characterState.name}
-        class={inputClass}
-        id="character-name"
-        type="text"
-        maxlength="37"
-        placeholder="John Wilcox"
-      >
-      <!-- End character name -->
-      <!-- Rating wrapper -->
-      <div class="flex flex-wrap -mx-3">
-        <!-- Path -->
-        <div class="w-full md:w-1/2 px-3">
-          <label class={labelClass} for="path">
-            Path
-          </label>
-          <input
-            bind:value={characterState.grounding.path}
-            class={inputClass}
-            id="path"
-            type="text"
-          >
-        </div>
-        <!-- End path -->
-        <!-- Path rating -->
-        <div class="w-full md:w-1/2 px-3">
-          <Selector
-            label="Rating"
-            options={Array.from({ length: 10 }, (_, i) => i + 1)}
-            bind:value={characterState.grounding.rating}
-            id="path-rating"
-          />
-        </div>
-        <!-- End humanity rating -->
-      </div>
-      <!-- Rating wrapper -->
-      <!-- HP/WP wrapper -->
-      <div class="flex flex-wrap -mx-3">
-        <!-- HP -->
-        <div class="w-full md:w-1/2 px-3">
-          <Selector
-            label="Health"
-            options={Array.from({ length: 10 }, (_, i) => i + 1)}
-            bind:value={characterState.health}
-            id="health"
-          />
-        </div>
-        <!-- End HP -->
-        <!-- WP -->
-        <div class="w-full md:w-1/2 px-3">
-          <Selector
-            label="Willpower"
-            options={Array.from({ length: 10 }, (_, i) => i + 1)}
-            bind:value={characterState.willpower}
-            id="willpower"
-          />
-        </div>
-        <!-- End WP -->
-      </div>
-      <!-- End HP/WP wrapper -->
 
-      <!-- Splat-specific -->
-      {#each characterSheet.special ?? [] as special}
-        {#if special.splats.includes(characterState.splat?.toLowerCase())}
-          {#each special.traits as trait}
-            {#if trait.type === 'select'}
-              <Selector
-                label={trait.label}
-                options={trait.options ?? []}
-                bind:value={characterState.special[trait.name]}
-                id={trait.name}
-              />
-            {/if}
-          {/each}
-        {/if}
-      {/each}
-      <!-- End splat-specific -->
+      {#if characterState.splat !== ''}
+        <!-- Character name -->
+        <label class={labelClass} for="character-name">
+          Character name
+        </label>
+        <input
+          bind:value={characterState.name}
+          class={inputClass}
+          id="character-name"
+          type="text"
+          maxlength="37"
+          placeholder="John Wilcox"
+        >
+        <!-- End character name -->
+        <!-- Rating wrapper -->
+        <div class="flex flex-wrap -mx-3">
+          <!-- Path -->
+          <div class="w-full md:w-1/2 px-3">
+            <label class={labelClass} for="path">
+              Path
+            </label>
+            <input
+              bind:value={characterState.grounding.path}
+              class={inputClass}
+              id="path"
+              type="text"
+            >
+          </div>
+          <!-- End path -->
+          <!-- Path rating -->
+          <div class="w-full md:w-1/2 px-3">
+            <Selector
+              label="Rating"
+              options={Array.from({ length: 10 }, (_, i) => i + 1)}
+              bind:value={characterState.grounding.rating}
+              id="path-rating"
+            />
+          </div>
+          <!-- End humanity rating -->
+        </div>
+        <!-- Rating wrapper -->
+        <!-- HP/WP wrapper -->
+        <div class="flex flex-wrap -mx-3">
+          <!-- HP -->
+          <div class="w-full md:w-1/2 px-3">
+            <Selector
+              label="Health"
+              options={Array.from({ length: 10 }, (_, i) => i + 1)}
+              bind:value={characterState.health}
+              id="health"
+            />
+          </div>
+          <!-- End HP -->
+          <!-- WP -->
+          <div class="w-full md:w-1/2 px-3">
+            <Selector
+              label="Willpower"
+              options={Array.from({ length: 10 }, (_, i) => i + 1)}
+              bind:value={characterState.willpower}
+              id="willpower"
+            />
+          </div>
+          <!-- End WP -->
+        </div>
+        <!-- End HP/WP wrapper -->
+
+        <!-- Splat-specific -->
+        {#each characterSheet.special ?? [] as special}
+          {#if special.splats.includes(characterState.splat?.toLowerCase())}
+            {#each special.traits as trait}
+              {#if trait.type === 'select'}
+                <Selector
+                  label={trait.label}
+                  options={trait.options ?? []}
+                  bind:value={characterState.special[trait.name]}
+                  id={trait.name}
+                />
+              {/if}
+            {/each}
+          {/if}
+        {/each}
+        <!-- End splat-specific -->
+      {/if}
     </div> <!-- This is the missing closing div -->
   </div>
 
 
-  <!-- Trait selection -->
+  {#if characterState.splat !== ''}
+    <!-- Trait selection -->
 
-  <!-- Inherent Attributes -->
-  <h2 class="text-2xl font-bold mb-4">{titleCase(characterSheet.inherent.category)}</h2>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-    {#each characterSheet.inherent.subcategories as subcategory}
-      <div class="card variant-ghost p-4">
-        <h3 class="text-xl font-semibold mb-2">{titleCase(subcategory.name)}</h3>
-        {#each subcategory.traits as trait}
-          <div class="mb-2">
-            <TraitSelector
-              defaultRating={1}
-              trait={titleCase(trait)}
-              bind:selectedRating={characterState.traits[trait]}
-            />
-              <!-- bind:selectedRating={characterState.inherent[subcategory.name][trait]} -->
-          </div>
-        {/each}
-      </div>
-    {/each}
-  </div>
-
-  <!-- Learned Abilities -->
-  <h2 class="text-2xl font-bold mb-4">{titleCase(characterSheet.learned.category)}</h2>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-    {#each characterSheet.learned.subcategories as subcategory}
-      <div class="card variant-ghost p-4">
-        <h3 class="text-xl font-semibold mb-2">{titleCase(subcategory.name)}</h3>
-        {#each subcategory.traits as trait}
-          <div class="mb-2">
-            <TraitSelector
-              trait={titleCase(trait)}
-              bind:selectedRating={characterState.traits[trait]}
-            />
-          </div>
-        {/each}
-      </div>
-    {/each}
-  </div>
-
-  <!-- Virtues -->
-  {#if characterSheet.virtues}
-    <h2 class="text-2xl font-bold mt-8 mb-4">Virtues</h2>
-    <div class="flex flex-wrap -mx-3">
-      {#each characterSheet.virtues as virtueGroup, i}
-        <div class="w-full md:w-1/2 lg:w-1/3 px-3 mb-2">
-          <Selector
-            options={virtueGroup}
-            bind:value={characterState.virtues[i].name}
-            id="character-type"
-          />
-          <TraitSelector
-            bind:selectedRating={characterState.virtues[i].rating}
-          />
+    <!-- Inherent Attributes -->
+    <h2 class="text-2xl font-bold mb-4">{titleCase(characterSheet.inherent.category)}</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+      {#each characterSheet.inherent.subcategories as subcategory}
+        <div class="card variant-ghost p-4">
+          <h3 class="text-xl font-semibold mb-2">{titleCase(subcategory.name)}</h3>
+          {#each subcategory.traits as trait}
+            <div class="mb-2">
+              <TraitSelector
+                defaultRating={1}
+                trait={titleCase(trait)}
+                bind:selectedRating={characterState.traits[trait]}
+              />
+                <!-- bind:selectedRating={characterState.inherent[subcategory.name][trait]} -->
+            </div>
+          {/each}
         </div>
       {/each}
     </div>
-  {/if}
 
-  <!-- Optional trait groups -->
-  {#each characterSheet.special ?? [] as special}
-    {#if special.splats.includes(characterState.splat?.toLowerCase())}
-      {#each special.traits as trait}
-        {#if trait.type === 'trait-group'}
-
-          <h2 class="text-2xl font-bold mt-8 mb-4">{trait.label}</h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div class="card variant-ghost p-4">
-              {#each trait.items ?? [] as item}
-                <div class="mb-2">
-                  <TraitSelector
-                    defaultRating={trait.default}
-                    trait={item}
-                    bind:selectedRating={characterState.special[trait.name][item]}
-                  />
-                </div>
-              {/each}
+    <!-- Learned Abilities -->
+    <h2 class="text-2xl font-bold mb-4">{titleCase(characterSheet.learned.category)}</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {#each characterSheet.learned.subcategories as subcategory}
+        <div class="card variant-ghost p-4">
+          <h3 class="text-xl font-semibold mb-2">{titleCase(subcategory.name)}</h3>
+          {#each subcategory.traits as trait}
+            <div class="mb-2">
+              <TraitSelector
+                trait={titleCase(trait)}
+                bind:selectedRating={characterState.traits[trait]}
+              />
             </div>
-          </div>
-
-        {/if}
+          {/each}
+        </div>
       {/each}
-    {/if}
-  {/each}
-  <!-- End optional trait groups -->
+    </div>
 
-  <!-- Submit button -->
-  <div class="flex justify-center">
-    <button
-      type="submit"
-      class="btn variant-filled-error mt-6 w-full"
-      disabled={!characterState.ready()}
-    >
-      Create {characterState.name}
-    </button>
-  </div>
+    <!-- Virtues -->
+    {#if characterSheet.virtues}
+      <h2 class="text-2xl font-bold mt-8 mb-4">Virtues</h2>
+      <div class="flex flex-wrap -mx-3">
+        {#each characterSheet.virtues as virtueGroup, i}
+          <div class="w-full md:w-1/2 lg:w-1/3 px-3 mb-2">
+            <Selector
+              options={virtueGroup}
+              bind:value={characterState.virtues[i].name}
+              id="character-type"
+            />
+            <TraitSelector
+              bind:selectedRating={characterState.virtues[i].rating}
+            />
+          </div>
+        {/each}
+      </div>
+    {/if}
+
+    <!-- Optional trait groups -->
+    {#each characterSheet.special ?? [] as special}
+      {#if special.splats.includes(characterState.splat?.toLowerCase())}
+        {#each special.traits as trait}
+          {#if trait.type === 'trait-group'}
+
+            <h2 class="text-2xl font-bold mt-8 mb-4">{trait.label}</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div class="card variant-ghost p-4">
+                {#each trait.items ?? [] as item}
+                  <div class="mb-2">
+                    <TraitSelector
+                      defaultRating={trait.default}
+                      trait={item}
+                      bind:selectedRating={characterState.special[trait.name][item]}
+                    />
+                  </div>
+                {/each}
+              </div>
+            </div>
+
+          {/if}
+        {/each}
+      {/if}
+    {/each}
+    <!-- End optional trait groups -->
+
+    <!-- Submit button -->
+    <div class="flex justify-center">
+      <button
+        type="submit"
+        class="btn variant-filled-error mt-6 w-full"
+        disabled={!characterState.ready()}
+      >
+        Create {characterState.name}
+      </button>
+    </div>
+  {/if}
 </form>

@@ -7,7 +7,7 @@
   export let id: string
   export let labelClass = 'block uppercase tracking-wide font-bold mb-2'
   export let selectClass = 'appearance-none select select-bordered block w-full border py-3 px-4 mb-3 leading-tight'
-  // export let placeholder = 'Select an option'
+  export let placeholder: string | null = null
 
   function handleChange(event: Event) {
     const selectedValue = (event.target as HTMLSelectElement).value
@@ -17,6 +17,8 @@
       value = typeof value === 'number' ? Number(selectedValue) : selectedValue;
     }
   }
+
+  $: showPlaceholder = placeholder && (value === null || value === '')
 </script>
 
 {#if label}
@@ -31,7 +33,9 @@
     on:change={handleChange}
     bind:value
   >
-    <!-- <option value="">{placeholder}</option> -->
+    {#if showPlaceholder}
+      <option value="" disabled>{placeholder}</option>
+    {/if}
     {#each options as option}
       <option value={option}>{option}</option>
     {/each}
