@@ -15,7 +15,7 @@
 
   const labelClass = 'block uppercase tracking-wide font-bold mb-2'
   const inputClass = 'input input-bordered block w-full border py-3 px-4 mb-3 leading-tight'
-  const splats = characterSheet.splats.map(titleCase)
+  const splats = characterSheet.splats.map(titleCase).sort()
 
   function titleCase(str: string): string {
     return str.toLowerCase().split(' ').map(function(word) {
