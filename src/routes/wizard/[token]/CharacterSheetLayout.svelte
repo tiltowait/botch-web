@@ -147,9 +147,9 @@
     previousSplat = characterState.splat
 
     const splatThemes: Record<string, string> = {
-      Mummy: 'vintage',
-      Vampire: 'sahara',
       Mortal: 'wintry',
+      Mummy: 'mummy',
+      Vampire: 'sahara',
     }
     currentTheme.set(splatThemes[characterState.splat] ?? 'skeleton')
     console.log($currentTheme)
