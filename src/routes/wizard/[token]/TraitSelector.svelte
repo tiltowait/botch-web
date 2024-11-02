@@ -42,7 +42,7 @@
   </div>
 </div>
 
-<style>
+<style lang="postcss">
   .rating-circle {
     width: 1.45rem;
     height: 1.45rem;
@@ -54,16 +54,16 @@
   }
 
   .rating-circle.selected {
-    background-color: red;
-    border-color: red;
+    background-color: rgb(var(--color-secondary-500)) !important;
+    border-color: rgb(var(--color-secondary-500)) !important;
   }
 
   .rating-circle:hover {
-    border-color: red;
+    border-color: rgb(var(--color-secondary-500)) !important;
   }
 
   .rating-circle:focus {
     outline: none;
-    box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.3);
+    box-shadow: 0 0 0 2px rgba(var(--color-secondary-500), 0.3) !important;
   }
 </style>
