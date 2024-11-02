@@ -1,10 +1,18 @@
 <script lang="ts">
 	import { page } from '$app/stores'
+	import { browser } from '$app/environment'
+	import { currentTheme } from '$lib/stores/theme'
+
 	import '../app.postcss';
 	import { AppShell, AppBar } from '@skeletonlabs/skeleton';
 
 	const baseTitle = 'BOTCH'
+
 	$: title = $page.data.title ? `${baseTitle} | ${$page.data.title}` : baseTitle
+
+	$: if (browser) {
+		document.body.setAttribute('data-theme', $currentTheme)
+	}
 </script>
 
 <svelte:head>

@@ -18,6 +18,18 @@ export default {
 						name: 'skeleton',
 						enhancements: true,
 					},
+					{
+						name: 'wintry',
+						enhancements: true,
+					},
+					{
+						name: 'vintage',
+						enhancements: true,
+					},
+					{
+						name: 'sahara',
+						enhancements: true,
+					},
 				],
 			},
 		}),
