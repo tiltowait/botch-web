@@ -1,4 +1,3 @@
-
 import type { CustomThemeConfig } from '@skeletonlabs/tw-plugin';
 
 export const mummy: CustomThemeConfig = {
@@ -7,8 +6,6 @@ export const mummy: CustomThemeConfig = {
     // =~= Theme Properties =~=
     "--theme-font-family-base": `system-ui`,
     "--theme-font-family-heading": `system-ui`,
-    // "--theme-font-family-heading": `ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif`,
-
     "--theme-font-color-base": "0 0 0",
     "--theme-font-color-dark": "255 255 255",
     "--theme-rounded-base": "9999px",
@@ -16,12 +13,12 @@ export const mummy: CustomThemeConfig = {
     "--theme-border-base": "1px",
     // =~= Theme On-X Colors =~=
     "--on-primary": "0 0 0",
-    "--on-secondary": "255 255 255",
-    "--on-tertiary": "0 0 0",
+    "--on-secondary": "0 0 0",
+    "--on-tertiary": "255 255 255",
     "--on-success": "0 0 0",
     "--on-warning": "0 0 0",
-    "--on-error": "255 255 255",
-    "--on-surface": "255 255 255",
+    "--on-error": "0 0 0",
+    "--on-surface": "0 0 0",
     // =~= Theme Colors  =~=
     // primary | #C99822
     "--color-primary-50": "247 240 222", // #f7f0de
@@ -34,17 +31,17 @@ export const mummy: CustomThemeConfig = {
     "--color-primary-700": "151 114 26", // #97721a
     "--color-primary-800": "121 91 20", // #795b14
     "--color-primary-900": "98 74 17", // #624a11
-    // secondary | #A52A2A
-    "--color-secondary-50": "242 223 223", // #f2dfdf
-    "--color-secondary-100": "237 212 212", // #edd4d4
-    "--color-secondary-200": "233 202 202", // #e9caca
-    "--color-secondary-300": "219 170 170", // #dbaaaa
-    "--color-secondary-400": "192 106 106", // #c06a6a
-    "--color-secondary-500": "165 42 42", // #A52A2A
-    "--color-secondary-600": "149 38 38", // #952626
-    "--color-secondary-700": "124 32 32", // #7c2020
-    "--color-secondary-800": "99 25 25", // #631919
-    "--color-secondary-900": "81 21 21", // #511515
+    // secondary | #FFC300
+    "--color-secondary-50": "255 246 217", // #fff6d9
+    "--color-secondary-100": "255 243 204", // #fff3cc
+    "--color-secondary-200": "255 240 191", // #fff0bf
+    "--color-secondary-300": "255 231 153", // #ffe799
+    "--color-secondary-400": "255 213 77", // #ffd54d
+    "--color-secondary-500": "255 195 0", // #FFC300
+    "--color-secondary-600": "230 176 0", // #e6b000
+    "--color-secondary-700": "191 146 0", // #bf9200
+    "--color-secondary-800": "153 117 0", // #997500
+    "--color-secondary-900": "125 96 0", // #7d6000
     // tertiary | #008080
     "--color-tertiary-50": "217 236 236", // #d9ecec
     "--color-tertiary-100": "204 230 230", // #cce6e6
