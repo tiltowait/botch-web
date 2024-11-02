@@ -147,6 +147,7 @@
     previousSplat = characterState.splat
 
     const splatThemes: Record<string, string> = {
+      Ghoul: 'wintry',
       Mortal: 'wintry',
       Mummy: 'mummy',
       Vampire: 'vampire',
