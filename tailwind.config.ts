@@ -4,6 +4,7 @@ import typography from '@tailwindcss/typography';
 import { skeleton } from '@skeletonlabs/tw-plugin'
 
 import { mummy } from './mummy'
+import { vampire } from './vampire'
 
 export default {
 	darkMode: 'class',
@@ -24,13 +25,10 @@ export default {
 						name: 'wintry',
 						enhancements: true,
 					},
-					{
-						name: 'sahara',
-						enhancements: true,
-					},
 				],
 				custom: [
 					mummy,
+					vampire,
 				]
 			},
 		}),

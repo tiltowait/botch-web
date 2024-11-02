@@ -149,7 +149,7 @@
     const splatThemes: Record<string, string> = {
       Mortal: 'wintry',
       Mummy: 'mummy',
-      Vampire: 'sahara',
+      Vampire: 'vampire',
     }
     currentTheme.set(splatThemes[characterState.splat] ?? 'skeleton')
     console.log($currentTheme)
