@@ -1,5 +1,6 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
+  import { currentTheme } from '$lib/stores/theme'
 
   import { sendProxiedPost, generateUrl } from '$lib/httpMethods'
   import { creationInfoStore } from '$lib/stores/CreationStore'
@@ -144,6 +145,14 @@
     characterState.special = initialSpecialValues(characterState.splat)
     characterState.grounding = getDefaultGrounding(characterState.splat)
     previousSplat = characterState.splat
+
+    const splatThemes: Record<string, string> = {
+      Mortal: 'wintry',
+      Mummy: 'mummy',
+      Vampire: 'vampire',
+    }
+    currentTheme.set(splatThemes[characterState.splat] ?? 'skeleton')
+    console.log($currentTheme)
   }
 </script>
 
