@@ -17,7 +17,7 @@ export const mummy: CustomThemeConfig = {
     "--on-tertiary": "255 255 255",
     "--on-success": "0 0 0",
     "--on-warning": "0 0 0",
-    "--on-error": "0 0 0",
+    "--on-error": "255 255 255",
     "--on-surface": "0 0 0",
     // =~= Theme Colors  =~=
     // primary | #C99822
