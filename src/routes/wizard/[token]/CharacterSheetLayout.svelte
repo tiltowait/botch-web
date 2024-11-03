@@ -14,7 +14,7 @@
   export let wizardSchema: WizardSchema
   const characterSheet = wizardSchema.traits // For convenience
 
-  const labelClass = 'block uppercase tracking-wide font-bold mb-2'
+  const labelClass = 'block uppercase tracking-wide mb-2 text-lg'
   const inputClass = 'input input-bordered block w-full border py-3 px-4 mb-3 leading-tight'
   const splats = characterSheet.splats.map(titleCase).sort()
 
@@ -153,18 +153,34 @@
       Vampire: 'vampire',
     }
     currentTheme.set(splatThemes[characterState.splat] ?? 'skeleton')
-    console.log($currentTheme)
   }
+
+  $: logoPath = characterState.splat
+    ? `/images/${characterSheet.line}/${characterState.splat.toLowerCase()}-logo.png`
+    : `/images/${characterSheet.line}/${characterSheet.line}-logo.png`
+
+  $: logoAlt = characterState.splat
+    ? `${characterState.splat} logo`
+    : `${characterSheet.line} logo`
 </script>
 
 <!-- Character basics -->
-<h1 class="h1 mb-3">New character</h1>
-<h3 class="flex h3 items-center mb-9">
-  {#if wizardSchema.guildIcon}
-    <img class="rounded-full h-[1.5em] w-auto mr-2" src={wizardSchema.guildIcon} alt={wizardSchema.guildName}>
-  {/if}
-  {wizardSchema.guildName}
-</h3>
+<div class="flex items-start gap-4">
+  <img src={logoPath} alt={logoAlt} class="w-auto h-24" />
+  <div>
+    <h1 class="h1 uppercase tracking-wide mb-3">New character</h1>
+    <h3 class="flex h3 tracking-wide items-center mb-9">
+      {#if wizardSchema.guildIcon}
+        <img
+          class="rounded-full h-[1.5em] w-auto mr-2"
+          src={wizardSchema.guildIcon}
+          alt={wizardSchema.guildName}
+        />
+      {/if}
+      {wizardSchema.guildName}
+    </h3>
+  </div>
+</div>
 
 <form on:submit={submitCharacter}>
   <div class="flex flex-wrap -mx-3 mb-6">
@@ -269,11 +285,11 @@
     <!-- Trait selection -->
 
     <!-- Inherent Attributes -->
-    <h2 class="text-2xl font-bold mb-4">{titleCase(characterSheet.inherent.category)}</h2>
+    <h2 class="h2 text-2xl uppercase mb-4">{titleCase(characterSheet.inherent.category)}</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
       {#each characterSheet.inherent.subcategories as subcategory}
         <div class="card variant-ghost p-4">
-          <h3 class="text-xl font-semibold mb-2">{titleCase(subcategory.name)}</h3>
+          <h3 class="h3 uppercase text-xl font-semibold mb-2">{titleCase(subcategory.name)}</h3>
           {#each subcategory.traits as trait}
             <div class="mb-2">
               <TraitSelector
@@ -289,11 +305,11 @@
     </div>
 
     <!-- Learned Abilities -->
-    <h2 class="text-2xl font-bold mb-4">{titleCase(characterSheet.learned.category)}</h2>
+    <h2 class="h2 uppercase text-2xl mb-4">{titleCase(characterSheet.learned.category)}</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {#each characterSheet.learned.subcategories as subcategory}
         <div class="card variant-ghost p-4">
-          <h3 class="text-xl font-semibold mb-2">{titleCase(subcategory.name)}</h3>
+          <h3 class="h3 uppercase text-xl font-semibold mb-2">{titleCase(subcategory.name)}</h3>
           {#each subcategory.traits as trait}
             <div class="mb-2">
               <TraitSelector
@@ -308,7 +324,7 @@
 
     <!-- Virtues -->
     {#if characterSheet.virtues}
-      <h2 class="text-2xl font-bold mt-8 mb-4">Virtues</h2>
+      <h2 class="h2 uppercase text-2xl mt-8 mb-4">Virtues</h2>
       <div class="flex flex-wrap -mx-3">
         {#each characterSheet.virtues as virtueGroup, i}
           <div class="w-full md:w-1/2 lg:w-1/3 px-3 mb-2">
@@ -331,7 +347,7 @@
         {#each special.traits as trait}
           {#if trait.type === 'trait-group'}
 
-            <h2 class="text-2xl font-bold mt-8 mb-4">{trait.label}</h2>
+            <h2 class="h2 uppercase text-2xl mt-8 mb-4">{trait.label}</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <div class="card variant-ghost p-4">
                 {#each trait.items ?? [] as item}

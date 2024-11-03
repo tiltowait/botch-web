@@ -5,7 +5,8 @@
   export let options: OptionType[]
   export let value: OptionType
   export let id: string
-  export let labelClass = 'block uppercase tracking-wide font-bold mb-2'
+  // export let labelClass = 'block uppercase tracking-wide font-bold mb-2'
+  export let labelClass = 'block uppercase tracking-wide mb-2 text-lg'
   export let selectClass = 'appearance-none select select-bordered block w-full border py-3 px-4 mb-3 leading-tight'
   export let placeholder: string | null = null
 
