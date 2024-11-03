@@ -153,18 +153,34 @@
       Vampire: 'vampire',
     }
     currentTheme.set(splatThemes[characterState.splat] ?? 'skeleton')
-    console.log($currentTheme)
   }
+
+  $: logoPath = characterState.splat
+    ? `/images/${characterSheet.line}/${characterState.splat.toLowerCase()}-logo.png`
+    : `/images/${characterSheet.line}/${characterSheet.line}-logo.png`
+
+  $: logoAlt = characterState.splat
+    ? `${characterState.splat} logo`
+    : `${characterSheet.line} logo`
 </script>
 
 <!-- Character basics -->
-<h1 class="h1 uppercase tracking-wide mb-3">New character</h1>
-<h3 class="flex h3 tracking-wide items-center mb-9">
-  {#if wizardSchema.guildIcon}
-    <img class="rounded-full h-[1.5em] w-auto mr-2" src={wizardSchema.guildIcon} alt={wizardSchema.guildName}>
-  {/if}
-  {wizardSchema.guildName}
-</h3>
+<div class="flex items-start gap-4">
+  <img src={logoPath} alt={logoAlt} class="w-auto h-24" />
+  <div>
+    <h1 class="h1 uppercase tracking-wide mb-3">New character</h1>
+    <h3 class="flex h3 tracking-wide items-center mb-9">
+      {#if wizardSchema.guildIcon}
+        <img
+          class="rounded-full h-[1.5em] w-auto mr-2"
+          src={wizardSchema.guildIcon}
+          alt={wizardSchema.guildName}
+        />
+      {/if}
+      {wizardSchema.guildName}
+    </h3>
+  </div>
+</div>
 
 <form on:submit={submitCharacter}>
   <div class="flex flex-wrap -mx-3 mb-6">
