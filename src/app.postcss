@@ -21,3 +21,42 @@ body {
 							border-color 0.3s ease,
 							box-shadow 0.3s ease;
 }
+
+@font-face {
+	font-family: 'Lumiera';
+	src: url('/fonts/lumiera.ttf') format('truetype');
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Berthold Akzidenz Grotesk';
+	src: url('/fonts/berthold.ttf') format('truetype');
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Caslon Antique';
+	src: url('/fonts/cas_antn.ttf') format('truetype');
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Escalido';
+	src: url('/fonts/EscalidoGothico.ttf') format('truetype');
+	font-display: swap;
+}
+
+:root [data-theme="wintry"] h1,
+:root [data-theme="wintry"] h2,
+:root [data-theme="wintry"] h3,
+:root [data-theme="wintry"] label {
+	font-family: 'Escalido';
+}
+
+:root [data-theme="mummy"] label {
+	font-family: 'Berthold Akzidenz Grotesk';
+}
+
+:root [data-theme="vampire"] label {
+	font-family: 'Caslon Antique';
+}

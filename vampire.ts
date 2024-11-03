@@ -5,7 +5,7 @@ export const vampire: CustomThemeConfig = {
     properties: {
     // =~= Theme Properties =~=
     "--theme-font-family-base": `system-ui`,
-    "--theme-font-family-heading": `system-ui`,
+    "--theme-font-family-heading": `'Caslon Antique', system-ui`,
 
     "--theme-font-color-base": "0 0 0",
     "--theme-font-color-dark": "255 255 255",
@@ -99,5 +99,12 @@ export const vampire: CustomThemeConfig = {
     "--color-surface-800": "36 36 36", // #242424
     "--color-surface-900": "29 29 29", // #1d1d1d
 
-  }
+  },
+  fonts: [
+    {
+      name: 'Caslon Antique',
+      url: '/fonts/cas_antn.ttf',
+      format: 'truetype',
+    },
+  ]
 }

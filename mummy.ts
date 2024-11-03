@@ -5,7 +5,7 @@ export const mummy: CustomThemeConfig = {
     properties: {
     // =~= Theme Properties =~=
     "--theme-font-family-base": `system-ui`,
-    "--theme-font-family-heading": `system-ui`,
+    "--theme-font-family-heading": `'lumiera', system-ui`,
     "--theme-font-color-base": "0 0 0",
     "--theme-font-color-dark": "255 255 255",
     "--theme-rounded-base": "9999px",
@@ -98,5 +98,17 @@ export const mummy: CustomThemeConfig = {
     "--color-surface-800": "126 108 84", // #7e6c54
     "--color-surface-900": "103 88 69", // #675845
 
-  }
+  },
+  fonts: [
+    {
+      name: 'lumiera',
+      url: '/fonts/lumiera.ttf',
+      format: 'truetype',
+    },
+    {
+      name: 'Berthold Akzidenz Grotesk',
+      url: '/fonts/berthold.ttf',
+      format: 'truetype',
+    }
+  ]
 }
