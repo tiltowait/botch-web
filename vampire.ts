@@ -103,7 +103,7 @@ export const vampire: CustomThemeConfig = {
   fonts: [
     {
       name: 'Caslon Antique',
-      url: '/fonts/cas_antn.ttf',
+      url: '/fonts/CaslonAntique.ttf',
       format: 'truetype',
     },
   ]
