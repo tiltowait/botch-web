@@ -241,7 +241,7 @@
           <div class="w-full md:w-1/2 px-3">
             <Selector
               label="Health"
-              options={Array.from({ length: 10 }, (_, i) => i + 1)}
+              options={Array.from({ length: 20 }, (_, i) => i + 1)}
               bind:value={characterState.health}
               id="health"
             />
