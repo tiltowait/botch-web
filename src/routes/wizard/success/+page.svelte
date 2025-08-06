@@ -30,7 +30,7 @@ onMount(() => {
       {/if}
       {characterInfo.guildName}
     </h3>
-    <p>Congratulations! Your character {characterInfo.characterName} has been created.</p>
+    <p>Congratulations! Your character, <strong>{characterInfo.characterName}</strong>, has been created.</p>
   {:else}
     <p>Loading character data...</p>
   {/if}
