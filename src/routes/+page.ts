@@ -1,6 +1,6 @@
-import type { PageLoad } from './$types'
+import type { PageLoad } from './$types';
 import { redirect } from '@sveltejs/kit';
 
 export const load: PageLoad = async () => {
-  redirect(307, 'https://github.com/tiltowait/botch-web')
-}
+	redirect(307, 'https://docs.botch.lol');
+};
